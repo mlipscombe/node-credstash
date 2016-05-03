@@ -6,7 +6,7 @@
   "scripts": {
     "test": "istanbul cover _mocha -dir $CIRCLE_ARTIFACTS",
     "coveralls": "cat $CIRCLE_ARTIFACTS/lcov.info | coveralls",
-    "build": "babel lib --out-dir lib-compiled && babel index.js --out-file index-compiled.js"
+    "build": "babel lib --out-dir lib-compiled && babel index.js --out-file index-compiled.js && sed -i '' 's:./lib:./lib-compiled:g' index-compiled.js"
   },
   "repository": {
     "type": "git",

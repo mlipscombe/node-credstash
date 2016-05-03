@@ -1,11 +1,11 @@
 'use strict';
 
 var async = require('async');
-var decrypter = require('./lib/decrypter');
-var encoder = require('./lib/encoder');
-var hmac = require('./lib/hmac');
-var keys = require('./lib/keys');
-var secrets = require('./lib/secrets');
+var decrypter = require('./lib-compiled/decrypter');
+var encoder = require('./lib-compiled/encoder');
+var hmac = require('./lib-compiled/hmac');
+var keys = require('./lib-compiled/keys');
+var secrets = require('./lib-compiled/secrets');
 var xtend = require('xtend');
 
 var defaults = {
