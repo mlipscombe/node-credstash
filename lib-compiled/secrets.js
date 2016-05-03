@@ -3,7 +3,7 @@
 var AWS = require('aws-sdk');
 var async = require('async');
 
-function find(table, name, options, done) {
+function find(table, name, options, awsConfig, done) {
   var params = {
     TableName: table || 'credential-store',
     ConsistentRead: true,
@@ -19,7 +19,7 @@ function find(table, name, options, done) {
     }
   };
 
-  return new AWS.DynamoDB().query(params, done);
+  return new AWS.DynamoDB(awsConfig).query(params, done);
 }
 
 function map(name, data, done) {
@@ -39,7 +39,7 @@ function map(name, data, done) {
 }
 
 module.exports = {
-  get: function get(table, name, options, done) {
-    return async.waterfall([async.apply(find, table, name, options), async.apply(map, name)], done);
+  get: function get(table, name, options, awsConfig, done) {
+    return async.waterfall([async.apply(find, table, name, options, awsConfig), async.apply(map, name)], done);
   }
 };
