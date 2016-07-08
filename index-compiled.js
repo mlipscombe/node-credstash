@@ -17,7 +17,12 @@ function Credstash(config) {
   this.awsConfig = config.awsConfig;
 }
 
-Credstash.prototype.get = function (name, options, done) {
+Credstash.prototype.get = function (name, context, options, done) {
+  if (typeof context === 'function') {
+    options = context;
+    context = undefined;
+  }
+
   if (typeof options === 'function') {
     done = options;
     options = defaults;
@@ -25,7 +30,7 @@ Credstash.prototype.get = function (name, options, done) {
     options = xtend(defaults, options);
   }
 
-  return async.waterfall([async.apply(secrets.get, this.table, name, options, this.awsConfig), async.apply(keys.decrypt(this.awsConfig)), async.apply(hmac.check), async.apply(decrypter.decrypt)], function (err, secrets) {
+  return async.waterfall([async.apply(secrets.get, this.table, name, options, this.awsConfig), async.apply(keys.decrypt(this.awsConfig, context)), async.apply(hmac.check), async.apply(decrypter.decrypt)], function (err, secrets) {
     if (err) {
       return done(err);
     }

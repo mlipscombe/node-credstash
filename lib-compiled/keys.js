@@ -4,10 +4,11 @@ var AWS = require('aws-sdk');
 var async = require('async');
 var encoder = require('./encoder');
 
-function _decrypt(awsConfig) {
+function _decrypt(awsConfig, context) {
   return function (key, done) {
     var params = {
       CiphertextBlob: encoder.decode(key)
+      EncryptionContext: context
     };
 
     return new AWS.KMS(awsConfig).decrypt(params, done);
@@ -26,11 +27,11 @@ function split(stashes, decryptedKeys, done) {
 }
 
 module.exports = {
-  decrypt: function decrypt(awsConfig) {
+  decrypt: function decrypt(awsConfig, context) {
     return function (stashes, done) {
       return async.waterfall([async.apply(async.map, stashes.map(function (s) {
         return s.key;
-      }), _decrypt(awsConfig)), async.apply(split, stashes)], done);
+      }), _decrypt(awsConfig, context)), async.apply(split, stashes)], done);
     };
   }
 };
