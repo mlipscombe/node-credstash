@@ -7,7 +7,7 @@ var encoder = require('./encoder');
 function _decrypt(awsConfig, context) {
   return function (key, done) {
     var params = {
-      CiphertextBlob: encoder.decode(key)
+      CiphertextBlob: encoder.decode(key),
       EncryptionContext: context
     };
 
